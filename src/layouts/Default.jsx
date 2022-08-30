@@ -1,6 +1,7 @@
 import React from 'react';
 import Logo from '../components/Logo';
 import CartButton from '../components/CartButton';
+import Search from '../components/Search';
 import { Route, Routes } from 'react-router-dom';
 
 import Cart from '../pages/Cart';
@@ -13,6 +14,7 @@ const Default = () => {
       <div className="header">
         <div className="container">
           <Logo />
+          <Search />
           <CartButton />
         </div>
       </div>

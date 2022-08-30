@@ -16,7 +16,7 @@ function Home() {
     setLoading(true);
     const _ = async () => {
       const res = await fetch(
-        `http://localhost:5000/pizzas?category=${categoryId}&_sort=${sortBy}&_order=desc`
+        `${import.meta.env.VITE_APP_API_URL}/api/pizzas?category=${categoryId}&_sort=${sortBy}&_order=desc`
       );
       const data = await res.json();
       setLoading(false);
