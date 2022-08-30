@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Cart() {
+function CartButton() {
   return (
     <div className="header__cart">
       <a href="/cart.html" className="button button--cart">
@@ -41,4 +41,4 @@ function Cart() {
   );
 }
 
-export default Cart;
+export default CartButton;

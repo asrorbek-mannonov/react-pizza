@@ -5,6 +5,14 @@
   padding: 40px 0;
 
   .container {
+    @media (max-width: 800px) {
+      row-gap: 20px;
+      justify-content: center;
+      flex-direction: column;
+    }
+  }
+
+  .container {
     display: flex;
     align-items: center;
     justify-content: space-between;

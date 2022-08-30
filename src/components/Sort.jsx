@@ -1,12 +1,26 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-function Sort() {
-  const sortOptions = ['популярности', 'цене', 'алфавиту'];
+function Sort({ value, onChange }) {
+  const sortOptions = [
+    {
+      title: 'популярности',
+      key: 'rating'
+    },
+    {
+      title: 'цене',
+      key: 'price'
+    },
+    {
+      title: 'алфавиту',
+      key: 'name'
+    }
+  ];
   const [open, setOpen] = React.useState(false);
-  const [orderBy, setOrderBy] = React.useState(sortOptions[0]);
+  const title = sortOptions.find(o => o.key === value).title;
 
-  const handleSelectOrderBy = option => {
-    setOrderBy(option);
+  const handleSelectOrderBy = key => {
+    onChange(key);
     setOpen(!open);
   };
 
@@ -30,18 +44,18 @@ function Sort() {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span>{orderBy}</span>
+        <span>{title}</span>
       </div>
       {open && (
         <div className="sort__popup">
           <ul>
-            {sortOptions.map(option => (
+            {sortOptions.map((option) => (
               <li
-                className={option === orderBy ? 'active' : ''}
-                onClick={() => handleSelectOrderBy(option)}
-                key={option}
+                className={option.key === value ? 'active' : ''}
+                onClick={() => handleSelectOrderBy(option.key)}
+                key={option.key}
               >
-                {option}
+                {option.title}
               </li>
             ))}
           </ul>
@@ -50,5 +64,10 @@ function Sort() {
     </div>
   );
 }
+
+Sort.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default Sort;

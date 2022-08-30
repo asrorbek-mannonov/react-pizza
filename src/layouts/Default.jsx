@@ -1,7 +1,9 @@
 import React from 'react';
-import Cart from '../components/Cart';
 import Logo from '../components/Logo';
+import CartButton from '../components/CartButton';
 import { Route, Routes } from 'react-router-dom';
+
+import Cart from '../pages/Cart';
 import Home from '../pages/Home';
 import NotFound from '../pages/NotFound';
 
@@ -11,15 +13,16 @@ const Default = () => {
       <div className="header">
         <div className="container">
           <Logo />
-          <Cart />
+          <CartButton />
         </div>
       </div>
       <div className="content">
         <div className="container">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </div>
       </div>
     </div>

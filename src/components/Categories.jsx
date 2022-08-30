@@ -1,24 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-function Categories() {
+function Categories({ value, onChange }) {
   const [categories] = React.useState([
     'Все',
     'Мясные',
     'Вегетарианская',
     'Гриль',
     'Острые',
-    'Закрытые',
+    'Закрытые'
   ]);
 
-  const [selectedCategory, setSelectedCategory] = React.useState(0);
   return (
     <div className="categories">
       <ul>
         {categories.map((c, i) => (
           <li
-            className={selectedCategory === i ? 'active' : ''}
+            className={value === i ? 'active' : ''}
             key={c}
-            onClick={() => setSelectedCategory(i)}
+            onClick={() => onChange(i)}
           >
             {c}
           </li>
@@ -27,5 +27,10 @@ function Categories() {
     </div>
   );
 }
+
+Categories.propTypes = {
+  value: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default Categories;

@@ -50,6 +50,10 @@ body {
     justify-content: space-between;
     flex-wrap: wrap;
     row-gap: 10px;
+
+    @media (max-width: 1140px) {
+      justify-content: center;
+    }
   }
 }
 
