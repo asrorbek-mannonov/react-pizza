@@ -1,7 +1,18 @@
 import React from 'react';
 import styles from './Search.module.scss';
+import SearchContext from '../../context/SearchContext';
+import { MdClear } from 'react-icons/md';
 
 const Search = props => {
+  const { searchValue, setSearchValue } =
+    React.useContext(SearchContext);
+  
+  const inputRef = React.useRef(null);
+  const handleInputClear = () => {
+    setSearchValue('');
+    inputRef.current.focus();
+  }
+
   return (
     <div className={styles.root}>
       <svg
@@ -24,10 +35,26 @@ const Search = props => {
         </g>
       </svg>
       <input
+        ref={inputRef}
         {...props}
         placeholder="Поиск ..."
         className={styles.input}
+        value={searchValue}
+        onChange={e => setSearchValue(e.target.value)}
       />
+      {searchValue && (
+        <MdClear
+          onClick={handleInputClear}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            right: '10px',
+            color: 'rgba(0, 0, 0, 0.7)',
+            cursor: 'pointer'
+          }}
+        />
+      )}
     </div>
   );
 };

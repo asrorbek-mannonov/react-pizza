@@ -4,29 +4,51 @@ import PizzaCard from '../components/PizzaCard';
 import Skeleton from '../components/PizzaCard/Skeleton';
 import Sort from '../components/Sort';
 import '../styles/app.scss';
+import SearchContext from '../context/SearchContext';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  setSortBy as setSortByAction,
+  setCategoryId as setCategoryIdAction
+} from '../store/slices/filterSlice';
+import http from '../http';
 
 function Home() {
+  const dispatch = useDispatch();
+  const { sortBy, categoryId } = useSelector(store => store.filter);
+  const setSortBy = val => dispatch(setSortByAction(val));
+  const setCategoryId = val => dispatch(setCategoryIdAction(val));
+
   const [pizzas, setPizzas] = React.useState([]);
-  const [categoryId, setCategoryId] = React.useState(0);
-  const [sortBy, setSortBy] = React.useState('name');
   const [loading, setLoading] = React.useState(false);
+  const { searchValue } = React.useContext(SearchContext);
 
   React.useEffect(() => {
     let isSubscribed = true;
     setLoading(true);
     const _ = async () => {
-      const res = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}/api/pizzas?category=${categoryId}&_sort=${sortBy}&_order=desc`
-      );
-      const data = await res.json();
+      const res = await http.get('/api/pizzas', {
+        params: {
+          category: categoryId,
+          _sort: sortBy,
+          _order: 'desc'
+        }
+      })
       setLoading(false);
-      if (isSubscribed) setPizzas(data);
+      if (isSubscribed) setPizzas(res.data);
     };
 
     _();
     window.scrollTo(0, 0);
     return () => (isSubscribed = false);
   }, [categoryId, sortBy]);
+
+  const filteredPizzas = React.useMemo(
+    () =>
+      pizzas.filter(pizza =>
+        pizza.name.toLowerCase().includes(searchValue.toLowerCase())
+      ),
+    [searchValue, pizzas]
+  );
 
   return (
     <>
@@ -42,7 +64,7 @@ function Home() {
               .map((_, i) => (
                 <Skeleton key={i} style={{ marginBottom: '60px' }} />
               ))
-          : pizzas.map(pizza => (
+          : filteredPizzas.map(pizza => (
               <PizzaCard {...pizza} key={pizza.id} />
             ))}
       </div>
