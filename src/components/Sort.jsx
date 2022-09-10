@@ -18,14 +18,29 @@ function Sort({ value, onChange }) {
   ];
   const [open, setOpen] = React.useState(false);
   const title = sortOptions.find(o => o.key === value).title;
+  const sortRef = React.useRef();
 
   const handleSelectOrderBy = key => {
     onChange(key);
     setOpen(!open);
   };
 
+  React.useEffect(() => {
+    const handleClickOutside = e => {
+      document.body.addEventListener('click', e => {
+        if (!e.path.includes(sortRef.current)) setOpen(false);
+      });
+    };
+
+    document.body.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.body.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label" onClick={() => setOpen(!open)}>
         <svg
           width="10"
@@ -49,7 +64,7 @@ function Sort({ value, onChange }) {
       {open && (
         <div className="sort__popup">
           <ul>
-            {sortOptions.map((option) => (
+            {sortOptions.map(option => (
               <li
                 className={option.key === value ? 'active' : ''}
                 onClick={() => handleSelectOrderBy(option.key)}

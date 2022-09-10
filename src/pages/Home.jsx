@@ -69,8 +69,11 @@ function Home() {
   }, []);
 
   React.useEffect(() => {
-    window.scrollTo(0, 0);
-    fetchPizzas();
+    if (!isSearch.current) {
+      window.scrollTo(0, 0);
+      fetchPizzas();
+    }
+    isSearch.current = false;
   }, [categoryId, sortBy, searchValue, currentPage]);
 
   React.useEffect(() => {
