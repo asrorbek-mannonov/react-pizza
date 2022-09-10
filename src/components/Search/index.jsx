@@ -4,14 +4,25 @@ import SearchContext from '../../context/SearchContext';
 import { MdClear } from 'react-icons/md';
 
 const Search = props => {
+  const [value, setValue] = React.useState('');
   const { searchValue, setSearchValue } =
     React.useContext(SearchContext);
-  
+
   const inputRef = React.useRef(null);
   const handleInputClear = () => {
     setSearchValue('');
     inputRef.current.focus();
-  }
+  };
+
+  const handleInputChange = e => {
+    setValue(e.target.value);
+
+    let timer;
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      setSearchValue(e.target.value);
+    }, 1000);
+  };
 
   return (
     <div className={styles.root}>
@@ -39,8 +50,8 @@ const Search = props => {
         {...props}
         placeholder="Поиск ..."
         className={styles.input}
-        value={searchValue}
-        onChange={e => setSearchValue(e.target.value)}
+        value={value}
+        onChange={handleInputChange}
       />
       {searchValue && (
         <MdClear

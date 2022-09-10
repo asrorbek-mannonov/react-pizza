@@ -28,9 +28,10 @@ function Home() {
     const _ = async () => {
       const res = await http.get('/api/pizzas', {
         params: {
+          name: searchValue,
           category: categoryId,
           _sort: sortBy,
-          _order: 'desc'
+          _order: 'desc',
         }
       })
       setLoading(false);
@@ -40,15 +41,7 @@ function Home() {
     _();
     window.scrollTo(0, 0);
     return () => (isSubscribed = false);
-  }, [categoryId, sortBy]);
-
-  const filteredPizzas = React.useMemo(
-    () =>
-      pizzas.filter(pizza =>
-        pizza.name.toLowerCase().includes(searchValue.toLowerCase())
-      ),
-    [searchValue, pizzas]
-  );
+  }, [categoryId, sortBy, searchValue]);
 
   return (
     <>
@@ -64,7 +57,7 @@ function Home() {
               .map((_, i) => (
                 <Skeleton key={i} style={{ marginBottom: '60px' }} />
               ))
-          : filteredPizzas.map(pizza => (
+          : pizzas.map(pizza => (
               <PizzaCard {...pizza} key={pizza.id} />
             ))}
       </div>
