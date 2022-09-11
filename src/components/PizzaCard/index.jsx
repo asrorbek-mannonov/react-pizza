@@ -1,12 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addItem,
+  getProductQuantity
+} from '../../store/slices/cartSlice';
 
 function PizzaCard(props) {
+  const dispatch = useDispatch();
+  const cart = useSelector(store => store.cart);
+  const count = getProductQuantity(cart)(props.id);
   const types = ['тонкое', 'традиционное'];
 
   const [type, setType] = React.useState(props.types[0]);
   const [size, setSize] = React.useState(props.sizes[0]);
-  const [count, setCount] = React.useState(0);
+
+  const handleAddToCart = () => {
+    dispatch(addItem({ ...props, type: types[type], size }));
+  };
 
   return (
     <div className="pizza-block__wrapper">
@@ -30,7 +41,7 @@ function PizzaCard(props) {
             ))}
           </ul>
           <ul>
-            {props.sizes.map((s, i) => (
+            {props.sizes.map(s => (
               <li
                 className={s === size ? 'active' : ''}
                 key={s}
@@ -48,7 +59,7 @@ function PizzaCard(props) {
           <button
             type="button"
             className="button button--outline button--add"
-            onClick={() => setCount(count + 1)}
+            onClick={handleAddToCart}
           >
             <svg
               width="12"

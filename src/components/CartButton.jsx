@@ -1,10 +1,16 @@
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import {
+  totalAmount,
+  totalProducts
+} from '../store/slices/cartSlice';
 
 function CartButton() {
+  const cart = useSelector(store => store.cart);
   return (
     <div className="header__cart">
       <Link to="/cart" className="button button--cart">
-        <span>520 ₽</span>
+        <span>{totalAmount(cart)} ₽</span>
         <div className="button__delimiter" />
         <svg
           width="18"
@@ -35,7 +41,7 @@ function CartButton() {
             strokeLinejoin="round"
           />
         </svg>
-        <span>3</span>
+        <span>{totalProducts(cart)}</span>
       </Link>
     </div>
   );

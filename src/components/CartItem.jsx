@@ -1,6 +1,28 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import {
+  getProductQuantity,
+  getProductTotalAmount,
+  decrementProductCount,
+  incrementProductCount,
+  removeItem
+} from '../store/slices/cartSlice';
 
-const CartItem = () => {
+const CartItem = ({ pizza }) => {
+  const cart = useSelector(store => store.cart);
+  const dispatch = useDispatch();
+  const handleDecrement = () => {
+    dispatch(decrementProductCount(pizza.id));
+  };
+
+  const handleIncrement = () => {
+    dispatch(incrementProductCount(pizza.id));
+  };
+
+  const handleRemoveFromCart = () => {
+    dispatch(removeItem(pizza.id));
+  };
   return (
     <div className="cart__item">
       <div className="cart__item-img">
@@ -11,11 +33,16 @@ const CartItem = () => {
         />
       </div>
       <div className="cart__item-info">
-        <h2>Сырный цыпленок</h2>
-        <p>тонкое тесто, 25 см.</p>
+        <h2>{pizza.name}</h2>
+        <p>
+          {pizza.type}, {pizza.size} см.
+        </p>
       </div>
       <div className="cart__item-count">
-        <div className="button button--outline button--circle cart__item-count-minus">
+        <div
+          className="button button--outline button--circle cart__item-count-minus"
+          onClick={handleDecrement}
+        >
           <svg
             width="9"
             height="10"
@@ -33,8 +60,11 @@ const CartItem = () => {
             />
           </svg>
         </div>
-        <b>1</b>
-        <div className="button button--outline button--circle cart__item-count-plus">
+        <b>{getProductQuantity(cart)(pizza.id)}</b>
+        <div
+          className="button button--outline button--circle cart__item-count-plus"
+          onClick={handleIncrement}
+        >
           <svg
             width="9"
             height="10"
@@ -54,9 +84,12 @@ const CartItem = () => {
         </div>
       </div>
       <div className="cart__item-price">
-        <b>769 ₽</b>
+        <b>{getProductTotalAmount(cart, pizza.id)} ₽</b>
       </div>
-      <div className="cart__item-remove">
+      <div
+        className="cart__item-remove"
+        onClick={handleRemoveFromCart}
+      >
         <div className="button button--outline button--circle">
           <svg
             width="9"
@@ -78,6 +111,10 @@ const CartItem = () => {
       </div>
     </div>
   );
+};
+
+CartItem.propTypes = {
+  pizza: PropTypes.object.isRequired
 };
 
 export default CartItem;

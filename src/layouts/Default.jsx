@@ -10,7 +10,7 @@ import Home from '../pages/Home';
 import NotFound from '../pages/NotFound';
 
 const Default = () => {
-  const [searchValue, setSearchValue] = React.useState('')
+  const [searchValue, setSearchValue] = React.useState('');
 
   return (
     <SearchContext.Provider value={{ searchValue, setSearchValue }}>
