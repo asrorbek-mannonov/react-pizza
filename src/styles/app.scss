@@ -32,15 +32,15 @@ body {
     grid-row-gap: 40px;
 
     @media (max-width: 1440px) {
-      grid-template-columns: repeat(3, 1fr); 
+      grid-template-columns: repeat(3, 1fr);
     }
 
     @media (max-width: 1140px) {
-      grid-template-columns: repeat(2, 1fr); 
+      grid-template-columns: repeat(2, 1fr);
     }
 
     @media (max-width: 800px) {
-      grid-template-columns: repeat(1, 1fr); 
+      grid-template-columns: repeat(1, 1fr);
     }
   }
 
