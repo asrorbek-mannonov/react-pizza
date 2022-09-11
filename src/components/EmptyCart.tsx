@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const EmptyCart = () => {
+function EmptyCart() {
   return (
     <div className="cart cart--empty">
       <h2>
@@ -18,6 +18,6 @@ const EmptyCart = () => {
       </Link>
     </div>
   );
-};
+}
 
 export default EmptyCart;

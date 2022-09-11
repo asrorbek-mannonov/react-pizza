@@ -1,19 +1,21 @@
 import React from 'react';
-import Logo from '../components/Logo';
-import CartButton from '../components/CartButton';
-import Search from '../components/Search';
 import { Route, Routes } from 'react-router-dom';
-import SearchContext from '../context/SearchContext';
+import Logo from '@/components/Logo';
+import CartButton from '@/components/CartButton';
+import Search from '@/components/Search';
+import SearchContext from '@/context/SearchContext';
 
-import Cart from '../pages/Cart';
-import Home from '../pages/Home';
-import NotFound from '../pages/NotFound';
+import Cart from '@/pages/Cart';
+import Home from '@/pages/Home';
+import NotFound from '@/pages/NotFound';
 
-const Default = () => {
+function Default() {
   const [searchValue, setSearchValue] = React.useState('');
 
+  const providerValue = React.useMemo(() => ({ searchValue, setSearchValue }), [searchValue, setSearchValue]);
+
   return (
-    <SearchContext.Provider value={{ searchValue, setSearchValue }}>
+    <SearchContext.Provider value={providerValue}>
       <div className="wrapper">
         <div className="header">
           <div className="container">
@@ -34,6 +36,6 @@ const Default = () => {
       </div>
     </SearchContext.Provider>
   );
-};
+}
 
 export default Default;

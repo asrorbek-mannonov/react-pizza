@@ -1,32 +1,43 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-function Sort({ value, onChange }) {
-  const sortOptions = [
+interface IProps {
+  value: string;
+  onChange: (val: string) => void;
+}
+
+interface ISortOption {
+  title: string;
+  key: string;
+}
+
+function Sort({ value, onChange }: IProps) {
+  const sortOptions: ISortOption[] = [
     {
       title: 'популярности',
-      key: 'rating'
+      key: 'rating',
     },
     {
       title: 'цене',
-      key: 'price'
+      key: 'price',
     },
     {
       title: 'алфавиту',
-      key: 'name'
-    }
+      key: 'name',
+    },
   ];
-  const [open, setOpen] = React.useState(false);
-  const title = sortOptions.find(o => o.key === value).title;
-  const sortRef = React.useRef();
 
-  const handleSelectOrderBy = key => {
+  const [open, setOpen] = React.useState(false);
+  const { title } = sortOptions.find((o) => o.key === value) as ISortOption;
+  const sortRef = React.useRef<HTMLDivElement | null>(null);
+
+  const handleSelectOrderBy = (key: string) => {
     onChange(key);
     setOpen(!open);
   };
 
   React.useEffect(() => {
-    const handleClickOutside = e => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleClickOutside = (e: any) => {
       if (!e.path.includes(sortRef.current)) setOpen(false);
     };
 
@@ -39,7 +50,7 @@ function Sort({ value, onChange }) {
 
   return (
     <div ref={sortRef} className="sort">
-      <div className="sort__label" onClick={() => setOpen(!open)}>
+      <div className="sort__label" onClick={() => setOpen(!open)} aria-hidden>
         <svg
           width="10"
           height="6"
@@ -48,7 +59,7 @@ function Sort({ value, onChange }) {
           xmlns="http://www.w3.org/2000/svg"
           style={{
             transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
-            transition: 'all .4s ease'
+            transition: 'all .4s ease',
           }}
         >
           <path
@@ -62,11 +73,12 @@ function Sort({ value, onChange }) {
       {open && (
         <div className="sort__popup">
           <ul>
-            {sortOptions.map(option => (
+            {sortOptions.map((option) => (
               <li
                 className={option.key === value ? 'active' : ''}
                 onClick={() => handleSelectOrderBy(option.key)}
                 key={option.key}
+                aria-hidden
               >
                 {option.title}
               </li>
@@ -77,10 +89,5 @@ function Sort({ value, onChange }) {
     </div>
   );
 }
-
-Sort.propTypes = {
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default Sort;

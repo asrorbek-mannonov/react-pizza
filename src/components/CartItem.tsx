@@ -1,17 +1,20 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
+import { ICartPizza } from '@/types';
 import {
   getProductQuantity,
   getProductTotalAmount,
   decrementProductCount,
   incrementProductCount,
-  removeItem
-} from '../store/slices/cartSlice';
+  removeItem,
+} from '@/store/slices/cartSlice';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 
-const CartItem = ({ pizza }) => {
-  const cart = useSelector(store => store.cart);
-  const dispatch = useDispatch();
+interface IProps {
+  pizza: ICartPizza;
+}
+
+function CartItem({ pizza }: IProps) {
+  const cart = useAppSelector((store) => store.cart);
+  const dispatch = useAppDispatch();
   const handleDecrement = () => {
     dispatch(decrementProductCount(pizza.id));
   };
@@ -42,14 +45,9 @@ const CartItem = ({ pizza }) => {
         <div
           className="button button--outline button--circle cart__item-count-minus"
           onClick={handleDecrement}
+          aria-hidden
         >
-          <svg
-            width="9"
-            height="10"
-            viewBox="0 0 10 10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="9" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M4.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z"
               fill="#EB5A1E"
@@ -64,14 +62,9 @@ const CartItem = ({ pizza }) => {
         <div
           className="button button--outline button--circle cart__item-count-plus"
           onClick={handleIncrement}
+          aria-hidden
         >
-          <svg
-            width="9"
-            height="10"
-            viewBox="0 0 10 10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="9" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M4.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z"
               fill="#EB5A1E"
@@ -86,18 +79,9 @@ const CartItem = ({ pizza }) => {
       <div className="cart__item-price">
         <b>{getProductTotalAmount(cart, pizza.id)} ₽</b>
       </div>
-      <div
-        className="cart__item-remove"
-        onClick={handleRemoveFromCart}
-      >
+      <div className="cart__item-remove" onClick={handleRemoveFromCart} aria-hidden>
         <div className="button button--outline button--circle">
-          <svg
-            width="9"
-            height="10"
-            viewBox="0 0 10 10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="9" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M4.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z"
               fill="#EB5A1E"
@@ -111,10 +95,6 @@ const CartItem = ({ pizza }) => {
       </div>
     </div>
   );
-};
-
-CartItem.propTypes = {
-  pizza: PropTypes.object.isRequired
-};
+}
 
 export default CartItem;

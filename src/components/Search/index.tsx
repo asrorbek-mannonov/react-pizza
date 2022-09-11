@@ -1,20 +1,22 @@
-import React from 'react';
+import type { HTMLProps, ChangeEvent } from 'react';
+import { useRef, useState, useContext } from 'react';
+import { MdClear } from 'react-icons/md';
 import styles from './Search.module.scss';
 import SearchContext from '../../context/SearchContext';
-import { MdClear } from 'react-icons/md';
 
-const Search = props => {
-  const [value, setValue] = React.useState('');
-  const { searchValue, setSearchValue } =
-    React.useContext(SearchContext);
+type IProps = HTMLProps<HTMLInputElement> & Record<string, string | number>;
 
-  const inputRef = React.useRef(null);
+function Search(props: IProps) {
+  const [value, setValue] = useState('');
+  const { searchValue, setSearchValue } = useContext(SearchContext);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const handleInputClear = () => {
     setSearchValue('');
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
 
-  const handleInputChange = e => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
 
     let timer;
@@ -34,7 +36,6 @@ const Search = props => {
         x="0px"
         y="0px"
         viewBox="0 0 489.713 489.713"
-        style={{ enableBackground: 'new 0 0 489.713 489.713' }}
         xmlSpace="preserve"
       >
         <g>
@@ -62,12 +63,12 @@ const Search = props => {
             transform: 'translateY(-50%)',
             right: '10px',
             color: 'rgba(0, 0, 0, 0.7)',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         />
       )}
     </div>
   );
-};
+}
 
 export default Search;

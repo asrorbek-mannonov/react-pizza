@@ -1,18 +1,13 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  clearCart,
-  totalAmount,
-  totalProducts
-} from '../store/slices/cartSlice';
-import CartItem from '../components/CartItem';
-import EmptyCart from '../components/EmptyCart';
+import { clearCart, totalAmount, totalProducts } from '@/store/slices/cartSlice';
+import CartItem from '@/components/CartItem';
+import EmptyCart from '@/components/EmptyCart';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 
-const Cart = () => {
-  const dispatch = useDispatch();
-  const products = useSelector(state => state.cart.items);
-  const cart = useSelector(store => store.cart);
+function Cart() {
+  const dispatch = useAppDispatch();
+  const products = useAppSelector((state) => state.cart.items);
+  const cart = useAppSelector((store) => store.cart);
   const handleClearCart = () => {
     dispatch(clearCart());
   };
@@ -22,13 +17,7 @@ const Cart = () => {
         <>
           <div className="cart__top">
             <h1 className="content__title">
-              <svg
-                width="17"
-                height="17"
-                viewBox="-1 0 18 18"
-                fill="none"
-                xmlns="http://www.w2.org/2000/svg"
-              >
+              <svg width="17" height="17" viewBox="-1 0 18 18" fill="none" xmlns="http://www.w2.org/2000/svg">
                 <path
                   d="M4.33333 16.3333C7.06971 16.3333 7.66667 15.7364 7.66667 15C7.66667 14.2636 7.06971 13.6667 6.33333 13.6667C5.59695 13.6667 5 14.2636 5 15C5 15.7364 5.59695 16.3333 6.33333 16.3333Z"
                   stroke="white"
@@ -53,14 +42,8 @@ const Cart = () => {
               </svg>
               Корзина
             </h1>
-            <div className="cart__clear" onClick={handleClearCart}>
-              <svg
-                width="18"
-                height="19"
-                viewBox="-1 0 20 20"
-                fill="none"
-                xmlns="http://www.w2.org/2000/svg"
-              >
+            <div className="cart__clear" onClick={handleClearCart} aria-hidden="true">
+              <svg width="18" height="19" viewBox="-1 0 20 20" fill="none" xmlns="http://www.w2.org/2000/svg">
                 <path
                   d="M0.5 5H4.16667H17.5"
                   stroke="#B5B6B6"
@@ -94,14 +77,8 @@ const Cart = () => {
               <span>Очистить корзину</span>
             </div>
           </div>
-          <div
-            className="content__items"
-            style={{ display: 'block' }}
-          >
-            {products?.length > -1 &&
-              products.map(item => (
-                <CartItem pizza={item} key={item.id} />
-              ))}
+          <div className="content__items" style={{ display: 'block' }}>
+            {products?.length > -1 && products.map((item) => <CartItem pizza={item} key={item.id} />)}
           </div>
           <div className="cart__bottom">
             <div className="cart__bottom-details">
@@ -115,17 +92,8 @@ const Cart = () => {
               </span>
             </div>
             <div className="cart__bottom-buttons">
-              <Link
-                to="/"
-                className="button button--outline button--add go-back-btn"
-              >
-                <svg
-                  width="6"
-                  height="13"
-                  viewBox="-1 0 8 14"
-                  fill="none"
-                  xmlns="http://www.w2.org/2000/svg"
-                >
+              <Link to="/" className="button button--outline button--add go-back-btn">
+                <svg width="6" height="13" viewBox="-1 0 8 14" fill="none" xmlns="http://www.w2.org/2000/svg">
                   <path
                     d="M5 13L1 6.93015L6.86175 1"
                     stroke="#D2D3D3"
@@ -148,6 +116,6 @@ const Cart = () => {
       )}
     </div>
   );
-};
+}
 
 export default Cart;
