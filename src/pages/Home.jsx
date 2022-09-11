@@ -14,8 +14,12 @@ import {
   setCurrentPage,
   setFilters
 } from '../store/slices/filterSlice';
-import http from '../http';
 import Pagination from '../components/Pagination';
+import {
+  selectPizza,
+  selectStatus,
+  fetchPizzas
+} from '../store/slices/pizzaSlice';
 
 function Home() {
   const dispatch = useDispatch();
@@ -25,31 +29,15 @@ function Home() {
   );
   const setSortBy = val => dispatch(setSortByAction(val));
   const setCategoryId = val => dispatch(setCategoryIdAction(val));
+  const pizzas = useSelector(selectPizza);
+  const loading = useSelector(selectStatus) === 'loading';
 
-  const [pizzas, setPizzas] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
   const { searchValue } = React.useContext(SearchContext);
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
 
   const onPageChange = val => {
     dispatch(setCurrentPage(val));
-  };
-
-  const fetchPizzas = async () => {
-    setLoading(true);
-    const res = await http.get('/api/pizzas', {
-      params: {
-        filter: searchValue,
-        category: categoryId ? categoryId : undefined,
-        _sort: sortBy,
-        _order: 'desc',
-        page: currentPage,
-        limit: 4
-      }
-    });
-    setLoading(false);
-    setPizzas(res.data);
   };
 
   React.useEffect(() => {
@@ -71,7 +59,16 @@ function Home() {
   React.useEffect(() => {
     if (!isSearch.current) {
       window.scrollTo(0, 0);
-      fetchPizzas();
+      dispatch(
+        fetchPizzas({
+          filter: searchValue,
+          category: categoryId ? categoryId : undefined,
+          _sort: sortBy,
+          _order: 'desc',
+          page: currentPage,
+          limit: 4
+        })
+      );
     }
     isSearch.current = false;
   }, [categoryId, sortBy, searchValue, currentPage]);
